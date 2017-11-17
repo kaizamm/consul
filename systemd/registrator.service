@@ -1,0 +1,24 @@
+[Unit]
+Description=registrator docker wrapper
+Wants=docker.socket
+After=docker.service
+
+[Service]
+User=root
+PermissionsStartOnly=true
+ExecStart=/usr/bin/docker run --net=host --privileged \
+                              --name=registrator \
+                              -v /var/run/docker.sock:/tmp/docker.sock \
+                              --restart=on-failure:5 \
+                              --memory=512M \
+                              gliderlabs/registrator:latest \
+                              consul://127.0.0.1:8500
+ExecStartPre=-/usr/bin/docker rm -f registrator
+ExecStop=/usr/bin/docker stop registrator
+Restart=always
+RestartSec=15s
+TimeoutStartSec=30s
+
+[Install]
+WantedBy=multi-user.target
+
