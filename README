@@ -1,0 +1,25 @@
+### consul
+####client & server
+mkdir /opt/consul/{conf,run,data}
+usradd consul
+chown consul.consul /opt/consul -R
+
+#### client
+```
+consul agent -data-dir=/opt/consul/data -config-dir=/opt/consul/conf -pid-file=/opt/consul/run/consul.pid -client=0.0.0.0 -bind=192.168.0.11 -node=consul-node-1 -retry-join '192.168.0.12'"
+```
+
+#### server
+```
+consul agent -server -ui -bootstrap-expect=1 -data-dir=/opt/consul/data -config-dir=/opt/consul/conf -pid-file=/opt/consul/run/consul.pid -client=0.0.0.0 -bind=192.168.0.12 -node=consul-server"
+```
+
+### registrator 
+```
+$ docker run -d \
+    --name=registrator \
+    --net=host \
+    --volume=/var/run/docker.sock:/tmp/docker.sock \
+    gliderlabs/registrator:latest \
+      consul://192.168.0.11:8500
+```
