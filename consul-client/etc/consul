@@ -1,0 +1,1 @@
+CONSUL_FLAGS="-data-dir=/opt/consul/data -config-dir=/opt/consul/conf -pid-file=/opt/consul/run/consul.pid -client=0.0.0.0 -bind=10.19.64.1 -node=consul-client-10-19-64-1 -retry-join '172.30.33.4' -retry-join '172.30.33.5' -retry-join '172.30.33.6'"

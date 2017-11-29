@@ -1,0 +1,1 @@
+CONSUL_FLAGS="-server -bootstrap-expect=3 -ui -data-dir=/opt/consul/data -config-dir=/opt/consul/conf -pid-file=/opt/consul/run/consul.pid -client=0.0.0.0 -bind=172.30.33.4 -node=consul-server-1-172-30-33-4 -retry-join=172.30.33.5 -retry-join=172.30.33.6"

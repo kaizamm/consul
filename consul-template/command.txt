@@ -1,0 +1,1 @@
+/usr/bin/consul-template  -template "/usr/local/nginx/conf/consul-template/bkend-8086.conf.template:/usr/local/nginx/conf/vhosts/bkend-8086.conf:/usr/local/nginx/sbin/nginx -s reload"  -template "/usr/local/nginx/conf/consul-template/frontal-80.conf.template:/usr/local/nginx/conf/vhosts/frontal-80.conf:/usr/local/nginx/sbin/nginx -s reload"

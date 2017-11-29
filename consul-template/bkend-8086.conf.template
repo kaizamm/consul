@@ -1,0 +1,33 @@
+upstream bkend{
+                      {{ range service "qcredit-bkend-8080"}}
+		      server {{ .Address }}:{{ .Port }} max_fails=3 fail_timeout=10s; {{ end }}
+			
+                      check interval=2000 rise=3 fall=2 timeout=1000 default_down=true type=http;
+                      check_http_send "GET /qcredit-bkend/cxf HTTP/1.0\r\n\r\n";
+                      check_http_expect_alive http_2xx http_3xx;
+                 }
+
+
+
+server {
+         listen       8086;
+         #server_name  uapi.quarkfinance.com;
+         server_name  172.30.30.77;
+         #charset koi8-r;
+         access_log  logs/bkend.access.log main;
+         #underscores_in_headers on;
+
+         location / {
+          #         index index.html;
+                   proxy_pass         http://bkend;
+                #   proxy_set_header   Host             $host:80;
+                   proxy_set_header   Host             $host;
+                   proxy_set_header   X-Real-IP        $remote_addr;
+                   proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+                   proxy_connect_timeout   30s;
+                   proxy_send_timeout      100s;
+                   proxy_read_timeout      100s;
+                   proxy_next_upstream error timeout invalid_header http_404 ;
+         }
+}
+
